@@ -1,0 +1,7 @@
+{
+  "name": "magivox-learning-site",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "node scripts/build.mjs", "check": "node scripts/check.mjs", "test": "npm run check && node --test functions/test/*.test.js test/*.test.js" },
+  "dependencies": { "pdfjs-dist": "6.3.289", "mammoth": "1.12.2" }
+}

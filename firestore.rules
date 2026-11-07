@@ -1,0 +1,132 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(userId) { return request.auth != null && request.auth.uid == userId; }
+    function admin() { return request.auth != null && request.auth.token.admin == true; }
+    function bounded(value, min, max) { return value is string && value.size() >= min && value.size() <= max; }
+    function supportData(feature) {
+      let d = request.resource.data;
+      return d.keys().hasAll(['uid', 'kind', 'name', 'email', 'category', 'title', 'description', 'status', 'createdAt'])
+        && d.keys().hasOnly(['uid', 'kind', 'name', 'email', 'category', 'title', 'description', 'status', 'createdAt'])
+        && owner(d.uid) && d.status == 'open' && d.createdAt == request.time
+        && (feature ? d.kind == 'feature' : d.kind in ['problem', 'contact'])
+        && bounded(d.name, 2, 100) && bounded(d.email, 3, 254)
+        && d.email.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$')
+        && bounded(d.category, 1, 60) && bounded(d.title, 3, 120) && bounded(d.description, 20, 4000);
+    }
+    function certificateEvidence(courseId, certificateId) {
+      let progress = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.appState.courseLearning[courseId];
+      return progress.certificate.id == certificateId
+        && progress.finalBestScore >= 70
+        && progress.finalPassedAt is string
+        && progress.lessons['0'].completedAt is string && progress.lessons['1'].completedAt is string && progress.lessons['2'].completedAt is string && progress.lessons['3'].completedAt is string && progress.lessons['4'].completedAt is string
+        && progress.practices['0'].attempts.size() > 0 && progress.practices['1'].attempts.size() > 0 && progress.practices['2'].attempts.size() > 0 && progress.practices['3'].attempts.size() > 0 && progress.practices['4'].attempts.size() > 0
+        && progress.topicTests['0'].bestScore >= 70 && progress.topicTests['1'].bestScore >= 70 && progress.topicTests['2'].bestScore >= 70 && progress.topicTests['3'].bestScore >= 70 && progress.topicTests['4'].bestScore >= 70;
+    }
+    function portfolioOwner(slug) {
+      return request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.appState.portfolio.visibility == 'public'
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.appState.portfolio.slug == slug;
+    }
+    function validPublicPortfolio(slug) {
+      let d = request.resource.data;
+      return slug.matches('^[a-z0-9][a-z0-9-]{1,58}[a-z0-9]$')
+        && d.keys().hasAll(['name','targetRole','about','skills','projects','certificates','linkedin','github','resumeUrl','publishedAt'])
+        && d.keys().hasOnly(['name','targetRole','about','skills','projects','certificates','linkedin','github','resumeUrl','publishedAt'])
+        && bounded(d.name, 1, 120) && bounded(d.targetRole, 0, 120) && bounded(d.about, 0, 1200)
+        && bounded(d.linkedin, 0, 1000) && bounded(d.github, 0, 1000) && bounded(d.resumeUrl, 0, 1000)
+        && d.skills is list && d.skills.size() <= 20
+        && d.projects is list && d.projects.size() <= 20
+        && d.certificates is list && d.certificates.size() <= 20
+        && d.publishedAt == request.time;
+    }
+    function validAdminContent() {
+      let d = request.resource.data;
+      return d.keys().hasAll(['type','title','status','content','updatedAt'])
+        && d.keys().hasOnly(['type','title','status','content','updatedAt'])
+        && d.type in ['Course','Module','Topic','PDF/resource','Topic question','Final exam','Aptitude/reasoning question','Interview question','Project','Job','Help/FAQ']
+        && d.status in ['draft','published','archived']
+        && bounded(d.title, 2, 180)
+        && bounded(d.content, 1, 12000)
+        && d.updatedAt == request.time;
+    }
+    match /supportTickets/{id} {
+      allow create: if supportData(false);
+      allow read: if owner(resource.data.uid) || (request.auth != null && request.auth.token.admin == true);
+      allow update: if admin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data.status in ['open','resolved'];
+    }
+    match /featureRequests/{id} {
+      allow create: if supportData(true);
+      allow read: if owner(resource.data.uid) || (request.auth != null && request.auth.token.admin == true);
+      allow update: if admin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data.status in ['open','resolved'];
+    }
+    match /certificates/{certificateId} {
+      allow get: if true;
+      allow list: if admin();
+      allow update, delete: if false;
+      allow create: if request.auth != null
+        && certificateId.matches('^MX-[A-Z0-9]{1,6}-[A-Z0-9]{16}$')
+        && request.resource.data.keys().hasAll(['studentName','courseId','courseName','completionDate','finalScore','duration','issuedAt'])
+        && request.resource.data.keys().hasOnly(['studentName','courseId','courseName','completionDate','finalScore','duration','issuedAt'])
+        && bounded(request.resource.data.studentName,1,120)
+        && bounded(request.resource.data.courseId,1,80)
+        && bounded(request.resource.data.courseName,1,160)
+        && bounded(request.resource.data.completionDate,10,40)
+        && request.resource.data.finalScore is int && request.resource.data.finalScore >= 70 && request.resource.data.finalScore <= 100
+        && bounded(request.resource.data.duration,1,40)
+        && bounded(request.resource.data.issuedAt,10,40)
+        && certificateEvidence(request.resource.data.courseId, certificateId);
+    }
+    match /publicPortfolios/{slug} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update: if portfolioOwner(slug) && validPublicPortfolio(slug);
+      allow delete: if portfolioOwner(slug);
+    }
+    match /users/{userId} {
+      allow read: if owner(userId) || admin();
+      allow create, update: if owner(userId);
+      match /teacherChats/{id} {
+        allow read, delete: if owner(userId);
+        allow create, update: if owner(userId)
+          && request.resource.data.keys().hasAll(['title','courseId','topicIndex','language','level','mode','messages','updatedAt'])
+          && request.resource.data.keys().hasOnly(['title','courseId','topicIndex','language','level','mode','messages','updatedAt'])
+          && bounded(request.resource.data.title, 1, 100)
+          && bounded(request.resource.data.courseId, 1, 80)
+          && request.resource.data.topicIndex is int && request.resource.data.topicIndex >= 0 && request.resource.data.topicIndex < 200
+          && request.resource.data.language in ['English','Telugu','Telugu (English letters)','Hindi']
+          && request.resource.data.level in ['Beginner','Intermediate','Advanced']
+          && request.resource.data.mode in ['Teach','Doubt','Practice','Revision']
+          && request.resource.data.messages is list && request.resource.data.messages.size() > 0 && request.resource.data.messages.size() <= 20
+          && request.resource.data.updatedAt == request.time;
+      }
+      match /teacherNotes/{id} {
+        allow read, delete: if owner(userId);
+        allow create, update: if owner(userId)
+          && request.resource.data.keys().hasAll(['title','courseId','content','updatedAt'])
+          && request.resource.data.keys().hasOnly(['title','courseId','content','updatedAt'])
+          && bounded(request.resource.data.title, 1, 100) && bounded(request.resource.data.courseId, 1, 80)
+          && bounded(request.resource.data.content, 1, 10000) && request.resource.data.updatedAt == request.time;
+      }
+      match /resumes/{id} {
+        allow read, delete: if owner(userId);
+        allow create, update: if owner(userId)
+          && request.resource.data.keys().hasAll(['title','data','updatedAt'])
+          && request.resource.data.keys().hasOnly(['title','data','updatedAt'])
+          && bounded(request.resource.data.title, 1, 100)
+          && request.resource.data.data is map
+          && request.resource.data.updatedAt == request.time;
+      }
+    }
+    match /adminContent/{id} {
+      allow read: if admin();
+      allow create, update: if admin() && validAdminContent();
+      allow delete: if admin();
+    }
+  }
+}

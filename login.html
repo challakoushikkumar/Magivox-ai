@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Log in to MAGIVOX AI">
+
+    <title>Log in | MAGIVOX AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-page">
+
+    <main class="login-layout">
+
+        <!-- Left section -->
+
+        <section class="login-intro">
+
+            <a class="brand brand-light"
+               href="index.html">
+
+                <span class="brand-mark">✦</span>
+
+                <span>
+                    MAGIVOX <strong>AI</strong>
+                </span>
+
+            </a>
+
+            <div class="intro-copy">
+
+                <p class="eyebrow eyebrow-light">
+                    YOUR CAREER JOURNEY CONTINUES
+                </p>
+
+                <h1>
+                    Learn. Practise. Get hired.
+                </h1>
+
+                <p>
+                    Continue building your skills, preparing for
+                    interviews and discovering better career opportunities.
+                </p>
+
+            </div>
+
+            <p class="login-footer">
+                Built for ambitious learners across India.
+            </p>
+
+        </section>
+
+
+        <!-- Login section -->
+
+        <section class="login-panel">
+
+            <div class="login-card auth-form-card">
+
+                <a href="index.html"
+                   class="back-link">
+                    ← Back
+                </a>
+
+                <a class="mobile-brand brand"
+                   href="index.html">
+
+                    <span class="brand-mark">✦</span>
+
+                    <span>
+                        MAGIVOX <strong>AI</strong>
+                    </span>
+
+                </a>
+
+                <p class="eyebrow">
+                    SECURE LOGIN
+                </p>
+
+                <h2>Welcome back</h2>
+
+                <p class="login-description">
+                    Log in to continue to your MAGIVOX AI dashboard.
+                </p>
+
+
+                <!-- Google login -->
+
+                <button type="button"
+                        id="googleButton"
+                        class="google-button">
+
+                    <svg class="google-icon"
+                         viewBox="0 0 48 48"
+                         aria-hidden="true">
+
+                        <path fill="#FFC107"
+                              d="M43.6 20H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.6-5.6C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z"/>
+
+                        <path fill="#FF3D00"
+                              d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.6-5.6C34 6.1 29.3 4 24 4c-7.7 0-14.3 4.3-17.7 10.7z"/>
+
+                        <path fill="#4CAF50"
+                              d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
+
+                        <path fill="#1976D2"
+                              d="M43.6 20H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.7-.4-4z"/>
+
+                    </svg>
+
+                    <span id="googleButtonText">
+                        Continue with Google
+                    </span>
+
+                </button>
+
+                <p id="googleError"
+                   class="form-error"
+                   aria-live="polite">
+                </p>
+
+
+                <div class="divider">
+                    <span>or continue with email</span>
+                </div>
+
+
+                <!-- Email login form -->
+
+                <form id="emailLoginForm"
+                      class="auth-form">
+
+                    <div class="form-field">
+
+                        <label for="loginEmail">
+                            Email address
+                        </label>
+
+                        <input type="email"
+                               id="loginEmail"
+                               class="name-input"
+                               placeholder="Enter your email"
+                               autocomplete="email"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <input type="password"
+                               id="loginPassword"
+                               class="name-input"
+                               placeholder="Enter your password"
+                               autocomplete="current-password"
+                               minlength="6"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-options">
+
+                        <label class="remember-option">
+
+                            <input type="checkbox"
+                                   id="rememberMe"
+                                   checked>
+
+                            Remember me
+
+                        </label>
+
+                        <button type="button"
+                                id="forgotPasswordButton"
+                                class="text-button">
+
+                            Forgot password?
+
+                        </button>
+
+                    </div>
+
+                    <p id="emailLoginError"
+                       class="form-error"
+                       aria-live="polite">
+                    </p>
+
+                    <button type="submit"
+                            id="emailLoginButton"
+                            class="primary-button">
+
+                        Log in
+
+                    </button>
+
+                </form>
+
+
+                <p class="auth-switch-text">
+
+                    Don’t have an account?
+
+                    <a href="signup.html">
+                        Sign up
+                    </a>
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module"
+            src="firebase-auth.js">
+    </script>
+
+</body>
+</html>

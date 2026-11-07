@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Set up your MAGIVOX AI career profile">
+
+    <title>Profile Setup | MAGIVOX AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="profile-setup-page">
+
+    <!-- Top navigation -->
+
+    <header class="profile-topbar">
+
+        <a href="index.html"
+           class="brand">
+
+            <span class="brand-mark">✦</span>
+
+            <span>
+                MAGIVOX <strong>AI</strong>
+            </span>
+
+        </a>
+
+        <div class="setup-step">
+
+            <span>PROFILE SETUP</span>
+
+            <strong>Step 1 of 1</strong>
+
+        </div>
+
+    </header>
+
+
+    <main class="profile-setup-container">
+
+        <!-- Left introduction -->
+
+        <section class="profile-introduction">
+
+            <p class="eyebrow">
+                PERSONALISE YOUR EXPERIENCE
+            </p>
+
+            <h1>
+                Tell us about your career goals.
+            </h1>
+
+            <p>
+                Your answers help MAGIVOX AI recommend the
+                right skills, interview questions and job opportunities.
+            </p>
+
+            <div class="profile-benefits">
+
+                <div class="profile-benefit">
+                    <span>✓</span>
+
+                    <p>
+                        Personalised learning roadmap
+                    </p>
+                </div>
+
+                <div class="profile-benefit">
+                    <span>✓</span>
+
+                    <p>
+                        Role-based interview practice
+                    </p>
+                </div>
+
+                <div class="profile-benefit">
+                    <span>✓</span>
+
+                    <p>
+                        Relevant job recommendations
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Profile form -->
+
+        <section class="profile-form-card">
+
+            <div class="profile-progress">
+
+                <div class="profile-progress-bar"></div>
+
+            </div>
+
+            <h2>Create your career profile</h2>
+
+            <p class="profile-form-description">
+                You can update these details later from Settings.
+            </p>
+
+
+            <form id="profileSetupForm"
+                  class="profile-form">
+
+
+                <div class="form-field">
+
+                    <label for="profileFullName">
+                        Full name
+                    </label>
+
+                    <input type="text"
+                           id="profileFullName"
+                           class="name-input"
+                           placeholder="Enter your full name"
+                           autocomplete="name"
+                           minlength="2"
+                           required>
+
+                </div>
+
+
+                <div class="profile-form-grid">
+
+                    <div class="form-field">
+
+                        <label for="preferredLanguage">
+                            Preferred language
+                        </label>
+
+                        <select id="preferredLanguage"
+                                class="profile-select"
+                                required>
+
+                            <option value="">
+                                Select language
+                            </option>
+
+                            <option value="English">
+                                English
+                            </option>
+
+                            <option value="Telugu">
+                                Telugu
+                            </option>
+
+                            <option value="Hindi">
+                                Hindi
+                            </option>
+
+                            <option value="Tamil">
+                                Tamil
+                            </option>
+
+                            <option value="Malayalam">
+                                Malayalam
+                            </option>
+
+                            <option value="Urdu">
+                                Urdu
+                            </option>
+
+                            <option value="Kannada">
+                                Kannada
+                            </option>
+
+                            <option value="Marathi">
+                                Marathi
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="experienceLevel">
+                            Experience level
+                        </label>
+
+                        <select id="experienceLevel"
+                                class="profile-select"
+                                required>
+
+                            <option value="">
+                                Select experience
+                            </option>
+
+                            <option value="Student">
+                                Student
+                            </option>
+
+                            <option value="Fresher">
+                                Fresher
+                            </option>
+
+                            <option value="1-2 years">
+                                1–2 years
+                            </option>
+
+                            <option value="3-5 years">
+                                3–5 years
+                            </option>
+
+                            <option value="5+ years">
+                                More than 5 years
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="targetRole">
+                        Target career role
+                    </label>
+
+                    <select id="targetRole"
+                            class="profile-select"
+                            required>
+
+                        <option value="">
+                            Select your target role
+                        </option>
+
+                        <option value="Data Analyst">
+                            Data Analyst
+                        </option>
+
+                        <option value="Frontend Developer">
+                            Frontend Developer
+                        </option>
+
+                        <option value="Java Developer">
+                            Java Developer
+                        </option>
+
+                        <option value="Python Developer">
+                            Python Developer
+                        </option>
+
+                        <option value="Data Entry Specialist">
+                            Data Entry Specialist
+                        </option>
+
+                        <option value="GIS Mapping Analyst">
+                            GIS / Data Mapping Analyst
+                        </option>
+
+                        <option value="Customer Support">
+                            Customer Support
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="profile-form-grid">
+
+                    <div class="form-field">
+
+                        <label for="profileCity">
+                            City
+                        </label>
+
+                        <input type="text"
+                               id="profileCity"
+                               class="name-input"
+                               placeholder="Enter your city"
+                               autocomplete="address-level2"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="profilePhone">
+                            Phone number
+                            <span class="optional-text">
+                                Optional
+                            </span>
+                        </label>
+
+                        <input type="tel"
+                               id="profilePhone"
+                               class="name-input"
+                               placeholder="Enter phone number"
+                               autocomplete="tel">
+
+                    </div>
+
+                </div>
+
+
+                <p id="profileSetupError"
+                   class="form-error"
+                   aria-live="polite">
+                </p>
+
+
+                <button type="submit"
+                        id="saveProfileButton"
+                        class="primary-button">
+
+                    Save and continue
+
+                </button>
+
+            </form>
+
+
+            <a href="dashboard.html"
+               class="setup-later-link">
+
+                Set up later
+
+            </a>
+
+        </section>
+
+    </main>
+
+    <script type="module"
+        src="profile-setup.js">
+</script>
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MAGIVOX AI career dashboard">
+    <title>MAGIVOX AI | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <a class="brand brand-light sidebar-brand" href="#home">
+            <span class="brand-mark">✦</span>
+            <span>MAGIVOX <strong>AI</strong></span>
+        </a>
+
+        <nav class="sidebar-nav" aria-label="Main navigation">
+            <p class="nav-label">OVERVIEW</p>
+            <a class="nav-link active" href="dashboard.html"><span>⌂</span>Dashboard</a>
+            <a class="nav-link" href="workspace.html?tool=roadmaps"><span>⌁</span>Career Roadmaps</a>
+            <a class="nav-link" href="workspace.html?tool=skills"><span>▤</span>Learn Skills</a>
+
+            <p class="nav-label">PRACTICE</p>
+            <a class="nav-link" href="workspace.html?tool=aptitude"><span>◎</span>Aptitude & Reasoning</a>
+            <a class="nav-link" href="workspace.html?tool=exams"><span>✓</span>Exams & Scores</a>
+            <a class="nav-link" href="workspace.html?tool=interview"><span>◉</span>Interview Practice</a>
+            <a class="nav-link" href="workspace.html?tool=resume"><span>▣</span>ATS Resume Studio</a>
+
+            <p class="nav-label">CAREER</p>
+            <a class="nav-link" href="workspace.html?tool=jobs"><span>⌕</span>AI Job Search</a>
+            <a class="nav-link" href="workspace.html?tool=library"><span>◆</span>Search &amp; Saved</a>
+            <a class="nav-link" href="workspace.html?tool=assistant"><span>✦</span>Ask MAGIVOX AI</a>
+            <a class="nav-link" href="workspace.html?tool=progress"><span>★</span>Progress & Portfolio</a>
+            <a class="nav-link" href="workspace.html?tool=settings"><span>⚙</span>Settings</a>
+            <a class="nav-link" data-tool-link="support" href="workspace.html?tool=support"><span>?</span>Help &amp; Support</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <span id="sidebarAvatar" class="avatar avatar-small">M</span>
+            <div>
+                <strong id="profileName">MAGIVOX User</strong>
+                <small id="accountType">Learner account</small>
+            </div>
+            <button id="logoutButton" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main" id="home">
+        <header class="topbar"> 
+            <div>
+                <p class="topbar-label">CAREER COMMAND CENTER</p>
+                <h1>Dashboard</h1>
+            </div>
+
+            <div class="topbar-actions">
+                <form id="globalSearchForm" class="topbar-search" role="search"><label class="sr-only" for="globalSearchInput">Search MAGIVOX</label><input id="globalSearchInput" type="search" placeholder="Search MAGIVOX"><button aria-label="Search">⌕</button></form>
+                <label class="dashboard-search" for="featureSearch">
+                    <span aria-hidden="true">⌕</span>
+                    <input id="featureSearch" type="search" placeholder="Search tools and skills">
+                </label>
+                <button class="notification-button" type="button" aria-label="Notifications">♧</button>
+                <span id="topAvatar" class="avatar">M</span>
+                <button id="mobileLogoutButton" class="topbar-logout-button" type="button">Log out</button>
+            </div>
+        </header>
+
+        <section class="welcome-banner">
+            <div class="welcome-copy">
+                <p class="eyebrow eyebrow-light">YOUR CAREER, YOUR NEXT MOVE</p>
+                <h2>Welcome, <span id="welcomeName">Learner</span>.</h2>
+                <p>Choose one focused action today. Every lesson, test and interview practice moves you closer to your role.</p>
+                <a class="banner-button" href="workspace.html?tool=skills">Continue learning <span>→</span></a>
+            </div>
+
+            <div class="goal-card">
+                <p>WEEKLY GOAL</p>
+                <div class="goal-number"><strong id="weeklyCompleted">0</strong><span>/ <span id="weeklyTotal">5</span> tasks</span></div>
+                <div class="progress-track"><span id="weeklyProgressBar" style="width: 0%"></span></div>
+                <small id="weeklyMessage">Complete five focused activities this week</small>
+            </div>
+        </section>
+
+        <section class="dashboard-roadmap-strip" aria-label="Current career roadmap">
+            <a href="workspace.html?tool=roadmaps"><small>TARGET ROLE</small><strong id="dashboardTargetRole">Choose a role</strong></a>
+            <a href="workspace.html?tool=roadmaps"><small>CURRENT STAGE</small><strong id="dashboardRoadmapStage">Foundation</strong></a>
+            <a id="dashboardTodayLink" href="workspace.html?tool=roadmaps"><small>TODAY'S PLAN</small><strong id="dashboardTodayPlan">Open your career plan</strong></a>
+            <a id="dashboardRecommendationLink" href="workspace.html?tool=roadmaps"><small>RECOMMENDED NEXT</small><strong id="dashboardRecommendation">Choose your roadmap</strong></a>
+        </section>
+
+        <section class="dashboard-jobs-strip" aria-label="Jobs and applications">
+            <a href="workspace.html?tool=jobs"><small>SAVED JOBS</small><strong id="dashboardSavedJobs">0</strong></a>
+            <a href="workspace.html?tool=jobs"><small>APPLICATIONS</small><strong id="dashboardApplications">0</strong></a>
+            <a href="workspace.html?tool=jobs"><small>UPCOMING INTERVIEWS</small><strong id="dashboardUpcomingInterviews">0</strong></a>
+            <a href="workspace.html?tool=jobs"><small>FOLLOW-UP DUE</small><strong id="dashboardFollowUps">0</strong></a>
+            <a href="workspace.html?tool=jobs"><small>BEST JOB MATCH</small><strong id="dashboardBestJob">Add a full job description</strong></a>
+            <a href="workspace.html?tool=jobs"><small>RECOMMENDED JOB PREP</small><strong id="dashboardJobPrep">Save a relevant job</strong></a>
+        </section>
+
+        <section class="stats-grid" aria-label="Learning summary">
+            <article class="stat-card">
+                <span class="stat-icon blue">▤</span>
+                <div><strong id="lessonsCompletedValue">0</strong><p>Lessons completed</p></div>
+                <small id="lessonCertificateText">0 certificates earned</small>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon green">◎</span>
+                <div><strong id="averageScoreValue">0%</strong><p>Aptitude progress</p></div>
+                <small id="aptitudeWeakTopicText">No aptitude attempts yet</small>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon purple">◉</span>
+                <div><strong id="interviewsPractisedValue">—</strong><p>Latest interview score</p></div>
+                <small id="interviewAttemptsText">0 completed practice sessions</small>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon orange">▣</span>
+                <div><strong id="resumeReadinessValue">—</strong><p>Resume readiness</p></div>
+                <small id="resumeReadinessText">Complete your resume</small>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon green">✓</span>
+                <div><strong id="jobReadinessValue">0%</strong><p>Job readiness</p></div>
+                <small>Role skills + projects + resume + interview</small>
+            </article>
+        </section>
+
+        <div class="section-heading" id="careers">
+            <div>
+                <p class="section-kicker">QUICK ACCESS</p>
+                <h2>Build your career toolkit</h2>
+            </div>
+            <a href="workspace.html?tool=skills">View learning plan →</a>
+        </div>
+
+        <section class="feature-grid" id="featureGrid">
+            <article class="feature-card searchable-card">
+                <span class="feature-icon career">⌁</span>
+                <p class="card-tag">CAREER PLANNING</p>
+                <h3>Career Roadmaps</h3>
+                <p>Follow clear paths for Data Analyst, Web Developer, GIS, Customer Support and more.</p>
+                <a href="workspace.html?tool=roadmaps">Explore roadmaps <span>→</span></a>
+            </article>
+
+            <article class="feature-card searchable-card" id="practice">
+                <span class="feature-icon practice">◎</span>
+                <p class="card-tag">TOPIC EXAMS</p>
+                <h3>Aptitude & Reasoning</h3>
+                <p>Learn every topic from basics, practise questions and take an exam after completion.</p>
+                <a href="workspace.html?tool=aptitude">Start practice <span>→</span></a>
+            </article>
+
+            <article class="feature-card searchable-card">
+                <span class="feature-icon practice">✓</span>
+                <p class="card-tag">COURSE ASSESSMENTS</p>
+                <h3>Exams & Scores</h3>
+                <p>Take 5-question topic tests and a locked 50-question final with score history, answer review and weak-topic analysis.</p>
+                <a href="workspace.html?tool=exams">Open exam center <span>→</span></a>
+            </article>
+
+            <article class="feature-card searchable-card" id="resume">
+                <span class="feature-icon resume">▣</span>
+                <p class="card-tag">ATS RESUME STUDIO</p>
+                <h3>Build + Match Resume</h3>
+                <p>Create a resume from scratch, choose a style, check JD overlap and export PDF/DOCX.</p>
+                <a href="workspace.html?tool=resume">Open resume studio <span>→</span></a>
+            </article>
+
+            <article class="feature-card searchable-card" id="interview">
+                <span class="feature-icon interview">◉</span>
+                <p class="card-tag">GUIDED PRACTICE</p>
+                <h3>Interview Practice</h3>
+                <p>Prepare self-introductions, role questions, HR rounds and written mock interviews.</p>
+                <a href="workspace.html?tool=interview">Practise now <span>→</span></a>
+            </article>
+
+            <article class="feature-card searchable-card" id="jobs">
+                <span class="feature-icon jobs">⌕</span>
+                <p class="card-tag">SMART DISCOVERY</p>
+                <h3>AI Job Search</h3>
+                <p>Discover sourced jobs, compare evidence-based matches, prepare and track applications.</p>
+                <a href="workspace.html?tool=jobs">Open jobs workspace <span>→</span></a>
+            </article>
+
+            <article class="feature-card searchable-card" id="assistant">
+                <span class="feature-icon assistant">✦</span>
+                <p class="card-tag">CAREER COACH PREVIEW</p>
+                <h3>Ask MAGIVOX AI</h3>
+                <p>Get guided career, learning, resume and interview suggestions in three languages.</p>
+                <a href="workspace.html?tool=assistant">Ask a question <span>→</span></a>
+            </article>
+        </section>
+
+        <section class="learning-section" id="learning">
+            <div class="section-heading learning-heading">
+                <div>
+                    <p class="section-kicker">CONTINUE LEARNING</p>
+                    <h2>Your active courses</h2>
+                </div>
+            </div>
+
+            <article id="continueLearningCard" class="continue-learning-card" aria-live="polite">
+                <div class="continue-learning-icon">▶</div>
+                <div class="continue-learning-copy">
+                    <p class="section-kicker">YOUR NEXT STUDY STEP</p>
+                    <h3 id="continueCourseTitle">Choose your first course</h3>
+                    <p id="continuePosition">Module 1 · First topic</p>
+                    <div class="continue-learning-meta"><span id="continueProgressText">0% complete</span><span id="continueLastStudied">Not started</span></div>
+                    <div class="course-progress"><span id="continueProgressBar" style="width:0%"></span></div>
+                    <p class="continue-next"><strong>Recommended:</strong> <span id="continueNextAction">Start a lesson</span></p>
+                </div>
+                <a id="continueLearningLink" class="banner-button" href="workspace.html?tool=skills">Continue</a>
+            </article>
+
+            <div class="course-list">
+                <article class="course-card searchable-card">
+                    <div class="course-letter excel">XL</div>
+                    <div class="course-info">
+                        <div class="course-title-row"><h3>Excel for Data Analysis</h3><span id="excelProgressText">0%</span></div>
+                        <p>Next: Pivot Tables and Dashboard Basics</p>
+                        <div class="course-progress"><span id="excelProgressBar" style="width: 0%"></span></div>
+                    </div>
+                    <a href="workspace.html?tool=skills&course=excel" aria-label="Continue Excel course">→</a>
+                </article>
+
+                <article class="course-card searchable-card">
+                    <div class="course-letter sql">SQL</div>
+                    <div class="course-info">
+                        <div class="course-title-row"><h3>SQL from Basics</h3><span id="sqlProgressText">0%</span></div>
+                        <p>Next: GROUP BY and Aggregate Functions</p>
+                        <div class="course-progress"><span id="sqlProgressBar" style="width: 0%"></span></div>
+                    </div>
+                    <a href="workspace.html?tool=skills&course=sql" aria-label="Continue SQL course">→</a>
+                </article>
+
+                <article class="course-card searchable-card">
+                    <div class="course-letter dsa">DS</div>
+                    <div class="course-info">
+                        <div class="course-title-row"><h3>Data Structures</h3><span id="dsaProgressText">0%</span></div>
+                        <p>Next: Arrays and Time Complexity</p>
+                        <div class="course-progress"><span id="dsaProgressBar" style="width: 0%"></span></div>
+                    </div>
+                    <a href="workspace.html?tool=skills&course=dsa" aria-label="Continue Data Structures course">→</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="dashboard-activity-section">
+            <div class="section-heading"><div><p class="section-kicker">REAL ACCOUNT EVENTS</p><h2>Recent activity</h2></div><a href="workspace.html?tool=library&view=saved">Open Saved</a></div>
+            <div id="recentActivityList" class="dashboard-activity-list" aria-live="polite"><div class="loading-card"><p>Loading recent activity…</p></div></div>
+        </section>
+
+        <p id="noSearchResults" class="no-results" hidden>No matching tools or courses found.</p>
+        <footer class="dashboard-footer">© 2026 MAGIVOX AI • Learn with confidence.</footer>
+    </main>
+
+    <script src="script.js"></script>
+    <script type="module" src="firebase-auth.js"></script>
+    <script type="module" src="dashboard-data.js"></script>
+</body>
+</html>
+

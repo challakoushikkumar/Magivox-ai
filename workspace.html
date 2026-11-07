@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MAGIVOX AI career learning workspace">
+    <title>MAGIVOX AI | Career Workspace</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="workspace.css">
+    <link rel="stylesheet" href="studio.css">
+</head>
+<body class="dashboard-page tool-page">
+    <aside class="sidebar">
+        <a class="brand brand-light sidebar-brand" href="dashboard.html">
+            <span class="brand-mark">✦</span>
+            <span>MAGIVOX <strong>AI</strong></span>
+        </a>
+
+        <nav class="sidebar-nav" aria-label="Main navigation">
+            <p class="nav-label">OVERVIEW</p>
+            <a class="nav-link" href="dashboard.html"><span>⌂</span>Dashboard</a>
+            <a class="nav-link" data-tool-link="roadmaps" href="workspace.html?tool=roadmaps"><span>⌁</span>Career Roadmaps</a>
+            <a class="nav-link" data-tool-link="skills" href="workspace.html?tool=skills"><span>▤</span>Learn Skills</a>
+
+            <p class="nav-label">PRACTICE</p>
+            <a class="nav-link" data-tool-link="aptitude" href="workspace.html?tool=aptitude"><span>◎</span>Aptitude & Reasoning</a>
+            <a class="nav-link" data-tool-link="exams" href="workspace.html?tool=exams"><span>✓</span>Exams & Scores</a>
+            <a class="nav-link" data-tool-link="interview" href="workspace.html?tool=interview"><span>◉</span>Interview Practice</a>
+            <a class="nav-link" data-tool-link="resume" href="workspace.html?tool=resume"><span>▣</span>ATS Resume Studio</a>
+
+            <p class="nav-label">CAREER</p>
+            <a class="nav-link" data-tool-link="jobs" href="workspace.html?tool=jobs"><span>⌕</span>AI Job Search</a>
+            <a class="nav-link" data-tool-link="library" href="workspace.html?tool=library"><span>◆</span>Search &amp; Saved</a>
+            <a class="nav-link" data-tool-link="assistant" href="workspace.html?tool=assistant"><span>✦</span>Ask MAGIVOX AI</a>
+            <a class="nav-link" data-tool-link="progress" href="workspace.html?tool=progress"><span>★</span>Progress & Portfolio</a>
+            <a class="nav-link" data-tool-link="settings" href="workspace.html?tool=settings"><span>⚙</span>Settings</a>
+            <a class="nav-link" data-tool-link="support" href="workspace.html?tool=support"><span>?</span>Help &amp; Support</a>
+        </nav>
+
+        <div class="sidebar-profile">
+            <span id="sidebarAvatar" class="avatar avatar-small">M</span>
+            <div>
+                <strong id="profileName">MAGIVOX User</strong>
+                <small id="accountType">Loading profile</small>
+            </div>
+            <button id="logoutButton" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main tool-main">
+        <header class="topbar">
+            <div>
+                <p class="topbar-label">MAGIVOX CAREER WORKSPACE</p>
+                <h1 id="pageTitle">Loading…</h1>
+            </div>
+
+            <div class="topbar-actions">
+                <form id="globalSearchForm" class="topbar-search" role="search"><label class="sr-only" for="globalSearchInput">Search MAGIVOX</label><input id="globalSearchInput" type="search" placeholder="Search MAGIVOX"><button aria-label="Search">⌕</button></form>
+                <a class="topbar-home-link" href="dashboard.html">Dashboard</a>
+                <button id="notificationButton" class="notification-button" type="button" aria-label="Notifications">♧</button>
+                <span id="topAvatar" class="avatar">M</span>
+                <button id="mobileLogoutButton" class="topbar-logout-button" type="button">Log out</button>
+            </div>
+        </header>
+
+        <section class="tool-hero" aria-labelledby="toolHeroTitle">
+            <div>
+                <p id="toolEyebrow" class="eyebrow eyebrow-light">MAGIVOX AI</p>
+                <h2 id="toolHeroTitle">Preparing your workspace…</h2>
+                <p id="toolHeroDescription">Loading your personalised career tools.</p>
+            </div>
+            <div class="tool-hero-status">
+                <span id="modeBadge">Loading</span>
+                <strong id="heroRole">Career learner</strong>
+                <small id="heroLanguage">Preferred language</small>
+            </div>
+        </section>
+
+        <section id="toolContent" class="tool-content">
+            <div class="loading-card">
+                <span class="loading-spinner" aria-hidden="true"></span>
+                <p>Loading your MAGIVOX workspace…</p>
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">© 2026 MAGIVOX AI • Learn with confidence.</footer>
+    </main>
+
+    <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="workspace.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+function showCourse(id, scroll = true, selectedIndex = null) {
+    const course = getCourse(id);
+    if (!course) return;
+    const record = courseRecord(appState, id);
+    const queryTopic = new URLSearchParams(location.search).get('topic');
+    const requested = selectedIndex === null ? (queryTopic === null ? Number(record.currentTopic) : Number(queryTopic)) : Number(selectedIndex);
+    const desiredIndex = Math.max(0, Math.min(course.topics.length - 1, Number.isInteger(requested) ? requested : 0));
+    const desiredState = topicLearningState(course, record, desiredIndex);
+    const recommendedBeforeOpen = nextCourseAction(course, record);
+    const topicIndex = desiredState.locked ? recommendedBeforeOpen.topicIndex : desiredIndex;
+    if (desiredState.locked) showToast(desiredState.reason);
+    recordLessonOpen(record, topicIndex);
+
+    const topic = course.topics[topicIndex];
+    const eligibility = courseEligibility(course, record);
+    const percent = eligibility.percent;
+    const states = course.topics.map((_, index) => topicLearningState(course, record, index));
+    const currentState = states[topicIndex];
+    const recommended = nextCourseAction(course, record);
+    const bestAttempt = record.topicTests[topicIndex]?.attempts?.slice().sort((a, b) => b.score - a.score)[0];
+    const detail = document.getElementById('courseDetail');
+    const lessonUrl = (index, action = '') => `workspace.html?tool=assistant&course=${encodeURIComponent(course.id)}&topic=${index}&lesson=${encodeURIComponent(`${course.title}: ${course.topics[index].title}`)}${action ? `&action=${encodeURIComponent(action)}` : ''}`;
+    const testUrl = `workspace.html?tool=exams&course=${encodeURIComponent(course.id)}&topic=${topicIndex}`;
+    const continueHref = recommended.kind === 'test' || recommended.kind === 'final' ? `workspace.html?tool=exams&course=${encodeURIComponent(course.id)}&topic=${recommended.topicIndex}` : `#${recommended.kind === 'practice' ? 'practice' : 'learn'}`;
+
+    detail.innerHTML = `
+        <section class="tool-panel course-detail">
+            <div class="course-detail-header">
+                <div><p class="eyebrow">${course.category.toUpperCase()} COURSE</p><h2>${escapeHTML(course.title)}</h2><p class="tool-muted">${eligibility.lessons}/${course.topics.length} lessons · ${eligibility.practices}/${course.topics.length} practices · ${eligibility.tests}/${course.topics.length} topic tests passed</p></div>
+                <div class="course-progress-summary"><strong>${percent}%</strong><span>verified progress</span></div>
+            </div>
+            <div class="progress-line" aria-label="${percent}% course progress"><span style="width:${percent}%"></span></div>
+            <div class="course-resource-banner"><div><strong>Course guide and notes</strong><p>${escapeHTML(course.description)}</p></div><div class="tool-actions"><a class="tool-button-secondary" href="#notes">View Notes</a><a class="tool-button-secondary" href="${course.pdf}" target="_blank" rel="noopener">Open PDF</a><a class="text-action" href="${course.pdf}" download>Download PDF</a></div></div>
+
+            <div class="course-study-layout">
+                <details class="course-outline" open>
+                    <summary>Modules and topics</summary>
+                    <nav aria-label="Course modules">
+                        ${course.topics.map((item, index) => { const state = states[index]; return `<section class="course-module ${index === topicIndex ? 'current' : ''} ${state.locked ? 'locked' : ''}"><small>MODULE ${index + 1}</small><button type="button" data-topic="${index}" ${state.locked ? 'disabled' : ''} aria-current="${index === topicIndex ? 'step' : 'false'}"><span>${state.locked ? '🔒' : state.passed ? '✓' : index + 1}</span><strong>${escapeHTML(item.title)}</strong></button><span class="learning-status status-${state.label.toLowerCase().replaceAll(' ', '-')}">${state.label}</span><p>${escapeHTML(state.reason)}</p></section>`; }).join('')}
+                    </nav>
+                </details>
+
+                <main class="course-learning-area">
+                    <header class="lesson-header"><div><p class="eyebrow">MODULE ${topicIndex + 1} OF ${course.topics.length}</p><h3>${escapeHTML(topic.title)}</h3></div><span class="learning-status status-${currentState.label.toLowerCase().replaceAll(' ', '-')}">${currentState.label}</span></header>
+                    <nav class="lesson-section-nav" aria-label="Topic sections"><a href="#learn">Learn</a><a href="#example">Example</a><a href="#practice">Practice</a><a href="#notes">Notes / PDF</a><a href="#ai-teacher">AI Teacher</a><a href="#topic-test">Test</a></nav>
+
+                    <section id="learn" class="lesson-section"><p class="eyebrow">1 · LEARN</p><h4>Detailed lesson</h4><p>${escapeHTML(topic.summary)}</p><p><strong>Why it matters:</strong> ${escapeHTML(topic.useCase)}</p><h4>Step-by-step workflow</h4><p>${escapeHTML(topic.workflow)}</p><h4>Key points</h4><ul class="key-point-list">${topic.keywords.map(keyword => `<li>${escapeHTML(keyword)}</li>`).join('')}</ul></section>
+
+                    <section id="example" class="lesson-section"><p class="eyebrow">2 · EXAMPLE</p><h4>Worked example</h4><p class="lesson-example">${escapeHTML(topic.example)}</p><p><strong>Common mistake:</strong> ${escapeHTML(topic.mistake)}</p><p><strong>Check your work:</strong> ${escapeHTML(topic.check)}</p></section>
+
+                    <section id="practice" class="lesson-section topic-practice"><p class="eyebrow">3 · PRACTICE</p><h4>Try it yourself</h4><label>Difficulty<select id="practiceDifficulty" class="tool-select"><option>Easy</option><option>Medium</option><option>Hard</option></select></label><p id="practiceQuestion"></p><textarea id="practiceAnswer" class="tool-textarea" rows="4" maxlength="1500" placeholder="Write your answer before viewing the solution."></textarea><div class="tool-actions"><button id="practiceHint" class="tool-button-secondary" type="button">Show hint</button><button id="recordPractice" class="tool-button" type="button">Submit practice</button><button id="practiceSolution" class="tool-button-secondary" type="button">Show answer</button></div><p id="practiceFeedback" role="status">${currentState.practiceComplete ? 'Practice submitted. You can review it again or continue.' : 'Submit one complete answer to record this practice.'}</p></section>
+
+                    <section id="notes" class="lesson-section"><p class="eyebrow">4 · NOTES / PDF</p><h4>Topic notes</h4><details open><summary>View concise notes without leaving this lesson</summary><p>${escapeHTML(topic.summary)}</p><p><strong>Workflow:</strong> ${escapeHTML(topic.workflow)}</p><p><strong>Remember:</strong> ${escapeHTML(topic.check)}</p></details><div class="tool-actions"><a class="tool-button-secondary" href="${course.pdf}" target="_blank" rel="noopener">Open course PDF</a><a class="text-action" href="${course.pdf}" download>Download PDF</a></div></section>
+
+                    <section id="ai-teacher" class="lesson-section"><p class="eyebrow">5 · AI TEACHER</p><h4>Get help with this topic</h4><p class="tool-muted">These actions open the existing MAGIVOX AI Teacher with this course and topic already selected.</p><div class="ai-topic-actions"><a href="${lessonUrl(topicIndex, 'ask')}">Ask about this topic</a><a href="${lessonUrl(topicIndex, 'simple')}">Explain Simply</a><a href="${lessonUrl(topicIndex, 'example')}">Give Example</a><a href="${lessonUrl(topicIndex, 'telugu')}">Explain in Telugu</a><a href="${lessonUrl(topicIndex, 'quiz')}">Quiz Me</a><a href="${lessonUrl(topicIndex, 'notes')}">Create Notes</a></div></section>
+
+                    <section id="topic-test" class="lesson-section topic-test-card ${currentState.testReady ? 'ready' : 'locked'}"><p class="eyebrow">6 · TOPIC TEST</p><h4>${currentState.passed ? 'Topic test passed' : currentState.testReady ? 'Ready for Topic Test' : 'Topic test locked'}</h4><p>${escapeHTML(currentState.reason)}</p>${bestAttempt ? `<p><strong>Best score:</strong> ${bestAttempt.score}% · ${bestAttempt.wrongCount} answers need review</p>` : ''}<a class="${currentState.testReady ? 'tool-button' : 'tool-button-secondary disabled-link'}" href="${currentState.testReady ? testUrl : '#topic-test'}" aria-disabled="${!currentState.testReady}">${currentState.passed ? 'Review or retake test' : 'Start 5-question test'}</a></section>
+
+                    ${eligibility.finalUnlocked ? `<section class="lesson-section final-unlocked"><p class="eyebrow">COURSE MILESTONE</p><h4>Course learning complete. Final exam unlocked.</h4><p>Every lesson, practice and topic test is complete. Pass the 50-question final exam to become eligible for the certificate.</p><a class="tool-button" href="workspace.html?tool=exams&course=${encodeURIComponent(course.id)}&topic=${course.topics.length - 1}">Start 50-question final exam</a></section>` : ''}
+
+                    <div class="lesson-navigation"><button id="previousTopic" class="tool-button-secondary" type="button" ${topicIndex === 0 ? 'disabled' : ''}>← Previous Topic</button><button id="completeLessonButton" class="tool-button-secondary" type="button" ${currentState.lessonComplete || !canCompleteLesson(record, topicIndex) ? 'disabled' : ''}>${currentState.lessonComplete ? 'Lesson complete ✓' : 'Mark lesson complete'}</button><button id="nextTopic" class="tool-button-secondary" type="button" ${topicIndex === course.topics.length - 1 || !currentState.passed ? 'disabled' : ''}>Next Topic →</button></div>
+                </main>
+            </div>
+
+            <div class="learning-continue-bar"><div><small>RECOMMENDED NEXT ACTION</small><strong>${escapeHTML(recommended.label)}</strong><span>${escapeHTML(recommended.detail)}</span></div><a id="continueLearningAction" class="tool-button" href="${continueHref}">Continue Learning →</a></div>
+        </section>`;
+
+    detail.querySelectorAll('[data-topic]').forEach(button => button.onclick = () => showCourse(id, false, Number(button.dataset.topic)));
+    const question = () => document.getElementById('practiceDifficulty').value === 'Easy' ? `Explain ${topic.title} in your own words.` : document.getElementById('practiceDifficulty').value === 'Medium' ? `Apply this example and explain the result: ${topic.example}` : `Describe the workflow for ${topic.title} and how you would avoid this mistake: ${topic.mistake}`;
+    const drawPractice = () => document.getElementById('practiceQuestion').textContent = question();
+    drawPractice();
+    document.getElementById('practiceDifficulty').onchange = drawPractice;
+    document.getElementById('practiceHint').onclick = () => document.getElementById('practiceFeedback').textContent = `Hint: use these ideas where relevant: ${topic.keywords.slice(0, 3).join(', ')}.`;
+    document.getElementById('practiceSolution').onclick = () => document.getElementById('practiceFeedback').textContent = `Reference answer: ${topic.summary} Example: ${topic.example}`;
+    document.getElementById('recordPractice').onclick = async () => { const answer = document.getElementById('practiceAnswer').value; try { await changeWorkspaceState(state => recordPractice(courseRecord(state, id), topicIndex, document.getElementById('practiceDifficulty').value, answer)); showToast('Practice attempt saved.'); showCourse(id, false, topicIndex); } catch (error) { document.getElementById('practiceFeedback').textContent = error.message; } };
+    document.getElementById('completeLessonButton').onclick = async () => { try { await changeWorkspaceState(state => { completeLesson(courseRecord(state, id), topicIndex); state.courseProgress[id] = Object.values(state.courseLearning[id].lessons).filter(item => item.completedAt).length; }); showToast(`Lesson completed: ${topic.title}`); showCourse(id, false, topicIndex); } catch (error) { showToast(error.message); } };
+    document.getElementById('previousTopic').onclick = () => showCourse(id, false, topicIndex - 1);
+    document.getElementById('nextTopic').onclick = () => showCourse(id, false, topicIndex + 1);
+    void persistState().catch(() => showToast('Course opened, but progress could not be synced yet.'));
+    if (scroll) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}

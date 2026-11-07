@@ -1,0 +1,25 @@
+export const HELP_TOPICS = [
+  { title: 'Course Help', question: 'How do I start a course such as SQL?', answer: 'Open Learn Skills. Choose SQL (or another course), then open a topic with your teacher. Use Exams & Scores for topic tests and the final exam.', tool: 'skills', keywords: /course|sql|lesson|learn skills|python|excel/ },
+  { title: 'Teacher Help', question: 'How do I use the AI Teacher?', answer: 'Open Ask MAGIVOX AI. Choose a course, topic, level and response language. Type a question or use a quick action. Agree to AI processing before sending learning questions. Ask “explain again” to continue the same conversation.', tool: 'assistant', keywords: /teacher|explain|telugu|chat|notes/ },
+  { title: 'Voice Help', question: 'How do I ask by voice?', answer: 'In Ask MAGIVOX AI, open Voice input. Press Record and allow the microphone, then Stop. Listen to the recording, agree to transcription, and press Transcribe recording. Check the transcript before sending. Read aloud needs a voice for your selected language on your device.', tool: 'assistant', keywords: /voice|microphone|record|speak|audio/ },
+  { title: 'Account Help', question: 'How do I change or reset my password?', answer: 'Open Settings → Change Password. Enter your current password and confirm a new password with 8+ characters, uppercase, lowercase, a number and @. If you forgot it, use Log in → Forgot password. Google-only accounts manage their password in Google Account security.', tool: 'settings', keywords: /password|account|login|log in|sign in/ },
+  { title: 'Technical Issue', question: 'Why is AI not answering or a PDF not opening?', answer: 'Check your connection and sign in. Keep your question in the input and try Retry if AI fails. AI access can depend on service availability. For PDFs, open Learn Skills and try the resource link again. If the issue continues, use Report a Problem below with the page and steps; never include passwords.', tool: 'support', keywords: /error|fail|not answering|not opening|broken|pdf|technical|problem/ },
+  { title: 'Exam Help', question: 'Where are exams and certificates?', answer: 'Open Exams & Scores to take five-question topic tests and the locked 50-question final. A certificate requires every lesson and practice, all topic tests at 70% or higher, and a final score of at least 70%. Verify issued IDs in Progress & Portfolio.', tool: 'exams', keywords: /exam|test|certificate|score/ },
+  { title: 'Resume Help', question: 'Where can I upload my resume?', answer: 'Open ATS Resume Studio → Upload / AI review. Choose a PDF, DOCX or TXT file, check the extracted text, and give permission before requesting AI review.', tool: 'resume', keywords: /resume|cv|ats/ },
+  { title: 'Interview Help', question: 'Where do I practise interviews or English?', answer: 'Open Interview Practice. Choose Self-Introduction, Mock Interview or English Communication Coach, then a mode and level. Start, record your answer, Stop, Transcribe and Send answer. The interviewer asks one follow-up at a time. Use Pause, Retry Answer or Skip as needed. End Interview after at least two answers for a scored report and history comparison.', tool: 'interview', keywords: /interview|introduction|english/ },
+  { title: 'Job Help', question: 'How do I search or track jobs?', answer: 'Open AI Job Search. Live listings require a connected job provider. You can keep your own application records; saving or marking a job as applied does not submit an application.', tool: 'jobs', keywords: /job|application|vacanc/ },
+  { title: 'Contact Support', question: 'How can I contact support or request a feature?', answer: 'Use Contact Support, Report a Problem or Feature Request below. Log in first, fill in the details and submit. A ticket reference appears only after Firestore confirms the save. Keep that reference for follow-up.', tool: 'support', keywords: /contact|support|feature|request|help/ }
+];
+export const HELP_KNOWLEDGE = HELP_TOPICS.map(topic => `${topic.question}\n${topic.answer}\nPage: workspace.html?tool=${topic.tool}`).join('\n\n');
+export function localHelp(question) {
+  const text = String(question).trim().toLowerCase();
+  if (/^(hi|hello|hey)( mawa| bro)?[!.? ]*$/.test(text)) return "Hi! I'm the MAGIVOX Help Assistant. What do you need help with?";
+  return HELP_TOPICS.find(topic => topic.keywords.test(text))?.answer || '';
+}
+export function supportSubmission(kind, values) {
+  if (!['problem', 'feature', 'contact'].includes(kind)) throw new Error('Choose a valid request type.');
+  const trim = (key, max) => String(values[key] || '').trim().slice(0, max);
+  const result = { kind, name: trim('name', 100), email: trim('email', 254), category: trim('category', 60), title: trim('title', 120), description: trim('description', 4000) };
+  if (result.name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result.email) || result.title.length < 3 || result.description.length < 20 || !result.category) throw new Error('Enter your name, a valid email, a title and at least 20 characters describing your request.');
+  return result;
+}

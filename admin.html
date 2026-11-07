@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>MAGIVOX Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="workspace.css">
+</head>
+<body class="admin-page">
+<main class="admin-shell">
+  <header>
+    <a class="brand" href="dashboard.html"><span class="brand-mark">✦</span><span>MAGIVOX <strong>AI</strong></span></a>
+    <div><p class="eyebrow">AUTHORIZED ADMINISTRATION</p><h1>Platform administration</h1></div>
+    <button id="adminLogout" class="tool-button-secondary">Log out</button>
+  </header>
+  <p id="adminStatus" class="inline-message" role="status" aria-live="polite">Checking administrator authorization…</p>
+  <section id="adminApp" hidden>
+    <div id="adminMetrics" class="admin-metrics"></div>
+    <section class="tool-panel">
+      <div class="platform-heading">
+        <div><h2>Content registry</h2><p>Manage approved course, module, topic, resource, question, project and job records. Published runtime course files remain deployment-controlled.</p></div>
+        <button id="newAdminItem" class="tool-button">New record</button>
+      </div>
+      <form id="adminItemForm" class="admin-form" hidden>
+        <input name="id" type="hidden">
+        <label>Type<select name="type" class="tool-select"><option>Course</option><option>Module</option><option>Topic</option><option>PDF/resource</option><option>Topic question</option><option>Final exam</option><option>Aptitude/reasoning question</option><option>Interview question</option><option>Project</option><option>Job</option><option>Help/FAQ</option></select></label>
+        <label>Title<input name="title" class="tool-input" required maxlength="180"></label>
+        <label>Status<select name="status" class="tool-select"><option>draft</option><option>published</option><option>archived</option></select></label>
+        <label>Content / configuration<textarea name="content" class="tool-textarea" rows="7" required maxlength="12000"></textarea></label>
+        <div class="tool-actions"><button class="tool-button">Save record</button><button id="cancelAdminItem" type="button" class="tool-button-secondary">Cancel</button></div>
+      </form>
+      <div id="adminItems"></div>
+    </section>
+    <section class="admin-two">
+      <article class="tool-panel"><h2>Support tickets</h2><div id="adminTickets"></div></article>
+      <article class="tool-panel"><h2>Feature requests</h2><div id="adminFeatures"></div></article>
+    </section>
+    <section class="tool-panel"><h2>Certificate audit</h2><p>Verification records are read-only to protect issued certificate evidence.</p><div id="adminCertificates"></div></section>
+  </section>
+</main>
+<script type="module" src="admin.js"></script>
+</body>
+</html>

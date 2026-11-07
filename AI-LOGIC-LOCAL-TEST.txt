@@ -1,0 +1,24 @@
+MAGIVOX AI - Firebase AI Logic local test
+==========================================
+
+What changed
+------------
+- AI Teacher, Interview Review, Resume Review, Exam Review and Voice Transcription now call Firebase AI Logic directly with the Gemini Developer API.
+- Gemini model: gemini-3.7-flash.
+- No OpenAI key is used in browser code.
+- No Firebase Cloud Function is required for these AI features.
+- Live jobs remain disabled until a separate approved job-data source is connected.
+
+Local App Check note
+--------------------
+Firebase began automatically enforcing App Check for new AI Logic setups in July 2026.
+If local AI requests are blocked by App Check, use the Firebase Console App Check debug-token flow, or temporarily set Firebase AI Logic to Unenforced only while testing locally. Re-enable/configure production App Check before publishing the AI feature.
+
+Quick test
+----------
+1. Open the project with VS Code Live Server.
+2. Log in with Google or email.
+3. Open Workspace > AI Teacher.
+4. Tick the permission box.
+5. Ask: What is SQL? Explain in simple words.
+6. A real Gemini response means the AI connection is working.

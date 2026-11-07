@@ -1,0 +1,12 @@
+{
+  "functions": [{ "source": "functions", "codebase": "magivox", "runtime": "nodejs22", "ignore": ["node_modules", ".git", "*-debug.log", "test", ".env.example"] }],
+  "firestore": { "rules": "firestore.rules" },
+  "hosting": {
+    "public": "dist-pages",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      { "source": "/api/**", "function": { "functionId": "magivoxApi", "region": "asia-south2" } },
+      { "source": "/jobs-api/**", "function": { "functionId": "magivoxJobs", "region": "asia-south2" } }
+    ]
+  }
+}

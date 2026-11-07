@@ -1,0 +1,40 @@
+MAGIVOX AI - ADVANCED V2
+
+Mawa, ee ZIP lo source + generated learning PDFs + latest static build unnayi.
+
+LOCAL GA FIRST CHECK
+1. ZIP -> Extract All.
+2. VS Code lo extracted MAGIVOX-AI-Next folder open chey.
+3. Node.js 22 unte terminal lo:
+      npm ci
+      npm --prefix functions ci
+      npm test
+      npm run build
+4. Frontend chudataniki Live Server use chey. file:// tho open cheyyaku.
+5. Full live AI/jobs kosam Firebase Hosting + Functions activation kavali.
+
+V2 LO MAIN FEATURES
+- 16 learning courses + 16 PDF guides.
+- Prathi course lo 5 modules/topics.
+- Prathi topic ki 10-question test: 5 MCQ + 5 written/practical.
+- 5 topic tests pass ayyaka 50-question final exam unlock.
+- Score history, weak-answer revision, progress.
+- AI Teacher modes: Teach / Doubt / Practice / Revision.
+- Course + topic + previous score context AI Teacher ki pampisthundi.
+- Voice recorder + real transcription backend plumbing.
+- Interview practice + transcript-based structured scoring.
+- ATS Resume Studio: from scratch build, 4 styles, JD keyword match,
+  ATS-style readiness, PDF print and DOCX export.
+- Resume PDF/DOCX/TXT reader + optional AI review.
+- XP, streak, badges, certificates, study plan, project tracker, portfolio.
+- Real Adzuna job-feed adapter + saved/application tracker.
+- Firebase Auth/Firestore integration and server-side paid API protection.
+
+IMPORTANT
+Ee ZIP lo API key / Adzuna key levu. Anduke paid AI, transcription and live jobs
+automatic ga live avvavu. Fake key/sample vacancies add cheyyaledhu.
+
+Current local automated baseline: 19 tests passed and static build succeeded.
+Real production activation steps SETUP.md lo unnayi.
+
+API key ni chat lo, HTML/JS lo, GitHub lo paste cheyyaku.

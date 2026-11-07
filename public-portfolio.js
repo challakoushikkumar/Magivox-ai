@@ -1,0 +1,12 @@
+import { getPublicPortfolio } from './portfolio-store.js';
+import { escapeHTML as e } from './studio-utils.js';
+
+const root=document.getElementById('publicPortfolio'),slug=new URLSearchParams(location.search).get('p')||'';
+function link(url,label){return url?`<a class="tool-button-secondary" href="${e(url)}" target="_blank" rel="noopener noreferrer">${e(label)}</a>`:'';}
+try{
+ if(!/^[a-z0-9][a-z0-9-]{1,58}[a-z0-9]$/.test(slug))throw new Error('This recruiter portfolio link is invalid.');
+ const data=await getPublicPortfolio(slug);if(!data)throw new Error('This portfolio is private or no longer available.');
+ document.title=`${data.name||'Learner'} | MAGIVOX Portfolio`;
+ root.innerHTML=`<header class="public-portfolio-hero"><a href="index.html" class="brand-name">✦ MAGIVOX AI</a><p>VERIFIED LEARNER PORTFOLIO</p><h1>${e(data.name||'MAGIVOX Learner')}</h1><h2>${e(data.targetRole||'Career learner')}</h2><p>${e(data.about||'')}</p><div class="tool-actions">${link(data.linkedin,'LinkedIn')}${link(data.github,'GitHub')}${link(data.resumeUrl,'Resume')}<button id="printPublicPortfolio" class="tool-button">Print / Save PDF</button></div></header><section><h2>Evidence-backed skills</h2><div class="badge-list">${(data.skills||[]).map(x=>`<span>${e(x.name)} · ${e(x.level)}</span>`).join('')||'<p>No approved skills shown.</p>'}</div></section><section><h2>Projects</h2><div class="public-project-grid">${(data.projects||[]).map(p=>`<article>${p.screenshot?`<img src="${e(p.screenshot)}" alt="${e(p.title)} screenshot">`:''}<h3>${e(p.title)}</h3><p>${e(p.description)}</p><small>${e(p.tools)}${p.role?` · ${e(p.role)}`:''}${p.completionDate?` · ${e(p.completionDate)}`:''}</small><div>${link(p.github,'GitHub')} ${link(p.live,'Live demo')}</div></article>`).join('')||'<p>No approved projects shown.</p>'}</div></section><section><h2>MAGIVOX certificates</h2>${(data.certificates||[]).map(c=>`<article class="certificate-row"><div><strong>${e(c.courseName)}</strong><small>${c.finalScore}% · ${e(c.id)}</small></div><a href="workspace.html?tool=progress" class="tool-button-secondary">Verify ID</a></article>`).join('')||'<p>No certificates shown.</p>'}<p class="public-disclosure">Only information explicitly made public by the learner appears on this page.</p></section>`;
+ document.getElementById('printPublicPortfolio').onclick=()=>window.print();
+}catch(error){root.innerHTML=`<section class="tool-panel"><h1>Portfolio unavailable</h1><p>${e(error.message)}</p><a href="index.html">Return to MAGIVOX AI</a></section>`;}
